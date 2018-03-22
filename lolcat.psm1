@@ -23,6 +23,10 @@ function lolcat {
     Animation duration
     .PARAMETER Speed
     Animation speed
+    .PARAMETER Version
+    Print Version and exit
+    .PARAMETER Help
+    Show this message
     #>
     param(
         [string]$Path,
@@ -37,15 +41,26 @@ function lolcat {
         [Alias('d')]
         [int32]$Duration = 12,
         [Alias('s')]
-        [double]$Speed = 20.0
+        [double]$Speed = 20.0,
+        [Alias('v')]
+        [switch]$Version,
+        [Alias('h')]
+        [switch]$Help
+        
     )
     $null = $PSBoundParameters.Remove('Path');
+    $null = $PSBoundParameters.Remove('Version');
+    $null = $PSBoundParameters.Remove('Help');
+    if ($Version) {
+        Write-Host "lolcat 1.0.0 (c)2018 andot@hprose.com"
+        return
+    }
     if ($Path) {
         Get-Content $Path -Encoding UTF8 | Out-Rainbow @PSBoundParameters
         return
     }
     $Data = @($Input)
-    if ($Data.Length -eq 0) {
+    if ($Help -or ($Data.Length -eq 0)) {
         $Data = @("
 Usage: lolcat [FILE] [OPTION]...
 
@@ -55,11 +70,18 @@ Usage: lolcat [FILE] [OPTION]...
        -animate, -a:   Enable psychedelics
   -duration, -d <i>:   Animation duration (default: 12)
      -speed, -s <f>:   Animation speed (default: 20.0)
+       -version, -v:   Print version and exit
+          -help, -h:   Show this message
 
 Examples:
   lolcat          Show this message.
   lolcat README   Display a rainbow README.
-  dir | lolcat    Display a rainbow directory list.");
+  dir | lolcat    Display a rainbow directory list.
+
+Report lolcat bugs to <https://www.github.com/andot/lolcat/issues>
+lolcat home page: <https://www.github.com/andot/lolcat/>
+Report lolcat translation bugs to <http://speaklolcat.com/>
+");
         $PSBoundParameters['Spread'] = 8.0;
         $PSBoundParameters['Freq'] = 0.3;
     }
