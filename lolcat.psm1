@@ -55,7 +55,7 @@ function lolcat {
     $null = $PSBoundParameters.Remove('Version');
     $null = $PSBoundParameters.Remove('Help');
     if ($Version) {
-        Write-Host "lolcat 1.0.1 (c)2018 andot@hprose.com"
+        Write-Host "lolcat 1.0.2 (c)2018 andot@hprose.com"
         return
     }
     if ($Path) {
