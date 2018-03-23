@@ -23,6 +23,8 @@ function lolcat {
     Animation duration
     .PARAMETER Speed
     Animation speed
+    .PARAMETER Keep
+    Keep ansi escape codes
     .PARAMETER Version
     Print Version and exit
     .PARAMETER Help
@@ -42,21 +44,27 @@ function lolcat {
         [int32]$Duration = 12,
         [Alias('s')]
         [double]$Speed = 20.0,
+        [Alias('k')]
+        [switch]$Keep,
         [Alias('v')]
         [switch]$Version,
         [Alias('h')]
         [switch]$Help
-        
     )
     $null = $PSBoundParameters.Remove('Path');
     $null = $PSBoundParameters.Remove('Version');
     $null = $PSBoundParameters.Remove('Help');
     if ($Version) {
-        Write-Host "lolcat 1.0.0 (c)2018 andot@hprose.com"
+        Write-Host "lolcat 1.0.1 (c)2018 andot@hprose.com"
         return
     }
     if ($Path) {
-        Get-Content $Path -Encoding UTF8 | Out-Rainbow @PSBoundParameters
+        if ($Keep) {
+            Get-Content $Path -Encoding UTF8 | Out-Rainbow @PSBoundParameters
+        }
+        else {
+            Get-Content $Path -Encoding UTF8 | Out-StripAnsi | Out-Rainbow @PSBoundParameters
+        }
         return
     }
     $Data = @($Input)
@@ -70,6 +78,7 @@ Usage: lolcat [FILE] [OPTION]...
        -animate, -a:   Enable psychedelics
   -duration, -d <i>:   Animation duration (default: 12)
      -speed, -s <f>:   Animation speed (default: 20.0)
+          -keep, -k:   Keep ansi escape codes
        -version, -v:   Print version and exit
           -help, -h:   Show this message
 
@@ -85,5 +94,10 @@ Report lolcat translation bugs to <http://speaklolcat.com/>
         $PSBoundParameters['Spread'] = 8.0;
         $PSBoundParameters['Freq'] = 0.3;
     }
-    $Data | Out-String -Stream | Out-Rainbow @PSBoundParameters
+    if ($Keep) {
+        $Data | Out-String -Stream | Out-Rainbow @PSBoundParameters
+    }
+    else {
+        $Data | Out-String -Stream | Out-StripAnsi | Out-Rainbow @PSBoundParameters
+    }
 }
