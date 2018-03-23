@@ -55,7 +55,7 @@ function lolcat {
     $null = $PSBoundParameters.Remove('Version');
     $null = $PSBoundParameters.Remove('Help');
     if ($Version) {
-        Write-Host "lolcat 1.0.3 (c)2018 andot@hprose.com"
+        Write-Host "lolcat 1.0.4 (c)2018 andot@hprose.com"
         return
     }
     if ($Path) {
@@ -97,9 +97,9 @@ Report lolcat translation bugs to <http://speaklolcat.com/>
         $PSBoundParameters['Freq'] = 0.3;
     }
     if ($Keep) {
-        $Data | Out-String -Stream | Out-Rainbow @PSBoundParameters
+        $Data | Out-String -Stream -Width $Host.UI.RawUI.WindowSize.Width | Out-Rainbow @PSBoundParameters
     }
     else {
-        $Data | Out-String -Stream | Out-StripAnsi | Out-Rainbow @PSBoundParameters
+        $Data | Out-String -Stream -Width $Host.UI.RawUI.WindowSize.Width | Out-StripAnsi | Out-Rainbow @PSBoundParameters
     }
 }
