@@ -31,7 +31,7 @@ function lolcat {
     Show this message
     #>
     param(
-        [string]$Path,
+        [string[]]$Path,
         [Alias('p')]
         [double]$Spread = 3.0,
         [Alias('f')]
@@ -55,7 +55,7 @@ function lolcat {
     $null = $PSBoundParameters.Remove('Version');
     $null = $PSBoundParameters.Remove('Help');
     if ($Version) {
-        Write-Host "lolcat 1.0.2 (c)2018 andot@hprose.com"
+        Write-Host "lolcat 1.0.3 (c)2018 andot@hprose.com"
         return
     }
     if ($Path) {
@@ -70,7 +70,9 @@ function lolcat {
     $Data = @($Input)
     if ($Help -or ($Data.Length -eq 0)) {
         $Data = @("
-Usage: lolcat [FILE] [OPTION]...
+Usage: lolcat [OPTION]... [FILE1[, FILE2[, ...]]]
+
+Concatenate FILE(s) to standard output with rainbow colors.
 
     -spread, -p <f>:   Rainbow spread (default: 3.0)
       -freq, -f <f>:   Rainbow frequency (default: 0.1)
@@ -84,7 +86,7 @@ Usage: lolcat [FILE] [OPTION]...
 
 Examples:
   lolcat          Show this message.
-  lolcat README   Display a rainbow README.
+  lolcat f, g     Output f's contents, then g's contents.
   dir | lolcat    Display a rainbow directory list.
 
 Report lolcat bugs to <https://www.github.com/andot/lolcat/issues>
