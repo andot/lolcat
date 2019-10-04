@@ -96,7 +96,7 @@ function Out-Rainbow {
                         $Red   = [int]([Math]::Sin($Freq*$n + 0)*127 + 128);
                         $Green = [int]([Math]::Sin($Freq*$n + 2*[Math]::PI/3)*127 + 128);
                         $Blue  = [int]([Math]::Sin($Freq*$n + 4*[Math]::PI/3)*127 + 128);
-                        $Out += "$ESC[38;2;$Red;$Green;$Blue;m$c$ESC[0m";
+                        $Out += "$ESC[38;2;$Red;$Green;$Blue;1m$c$ESC[0m";
                     }
                     if ($x -lt $Duration) {
                         $Out += "$ESC[u"
